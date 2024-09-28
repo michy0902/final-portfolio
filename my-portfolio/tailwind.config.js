@@ -11,6 +11,9 @@ export default {
         },
         accent: "#A0AEC0", // Accent color
       },
+      fontFamily: {
+        sans: ['"Share Tech"', 'sans-serif'], // Add Share Tech font
+      },
     },
   },
   plugins: [],

@@ -6,8 +6,30 @@
       <div class="text-lg text-bluishGrey-dark">michy's portfolio</div>
       <div class="space-x-6">
         <a href="#" class="text-bluishGrey-dark hover:text-black">home</a>
-        <a href="#" class="text-bluishGrey-dark hover:text-black">about</a>
-        <a href="#" class="text-bluishGrey-dark hover:text-black">contact</a>
+        <a
+          href="#"
+          @click.prevent="triggerGlow('about')"
+          class="text-bluishGrey-dark hover:text-black"
+          >about</a
+        >
+        <a
+          href="#"
+          @click.prevent="triggerGlow('projects')"
+          class="text-bluishGrey-dark hover:text-black"
+          >projects</a
+        >
+        <a
+          href="#"
+          @click.prevent="triggerGlow('contact')"
+          class="text-bluishGrey-dark hover:text-black"
+          >contact</a
+        >
+        <button @click="toggleDarkMode">
+          <img
+            src="@/assets/images/moon-night-mode-space-rocket-svgrepo-com (1).svg"
+            alt="dark mode toggle"
+            width="25px" />
+        </button>
       </div>
     </div>
 
@@ -17,7 +39,7 @@
       <div
         class="col-span-2 row-span-2 bg-bluishGrey-light p-6 rounded-lg flex flex-col justify-between">
         <h1 class="text-4xl font-bold text-bluishGrey-dark leading-tight">
-          Let’s create dance floor <span class="italic">magic</span> for your
+          Let’s create dance floor magic for your
           special day
         </h1>
         <div class="flex justify-center mt-4">
@@ -37,8 +59,12 @@
         <p class="mt-2 text-center text-lg">michy's pic</p>
       </div>
 
-      <!-- Events Section -->
-      <div class="bg-bluishGrey-light p-4 rounded-lg flex flex-col space-y-2">
+      <!-- Events Section (Glow effect applied dynamically) -->
+      <div
+        :class="[
+          'bg-bluishGrey-light p-4 rounded-lg flex flex-col space-y-2',
+          glowingSection === 'projects' ? 'glow' : '',
+        ]">
         <h2 class="text-lg font-semibold text-center">Projects</h2>
         <ul class="space-y-2">
           <li class="border-b border-bluishGrey-dark pb-1">project 1</li>
@@ -48,7 +74,11 @@
       </div>
 
       <!-- About Section -->
-      <div class="bg-bluishGrey-light p-6 rounded-lg">
+      <div
+        :class="[
+          'bg-bluishGrey-light p-6 rounded-lg',
+          glowingSection === 'about' ? 'glow' : '',
+        ]">
         <p class="text-sm text-justify">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit iusto
           debitis error ab placeat enim praesentium recusandae fugit, cupiditate
@@ -57,44 +87,86 @@
         </p>
       </div>
 
-      <!-- Contact Section -->
+      <!-- Contact Section (Glow effect applied dynamically) -->
       <div
-        class="bg-bluishGrey-light p-6 rounded-lg flex justify-center items-center">
-        <button @click="toggleDarkMode" class="bg-bluishGrey-dark text-white py-2 px-4 rounded-lg">
-          switch mode
-        </button>
-      </div>
+        :class="[
+          'bg-bluishGrey-light p-6 rounded-lg flex justify-center items-center',
+          glowingSection === 'contact' ? 'glow' : '',
+        ]"></div>
     </div>
 
     <!-- Footer Social Media Links -->
     <div class="flex justify-center space-x-6 mt-4">
-      <a href="#" class="text-bluishGrey-dark hover:text-black">Instagram</a>
-      <a href="#" class="text-bluishGrey-dark hover:text-black">Twitter</a>
-      <a href="#" class="text-bluishGrey-dark hover:text-black">Pinterest</a>
+      <a
+        href="https://www.instagram.com/michy.codes/"
+        target="_blank"
+        class="text-bluishGrey-dark hover:text-black"
+        >Instagram</a
+      >
+      <a
+        href="https://x.com/michycreates"
+        target="_blank"
+        class="text-bluishGrey-dark hover:text-black"
+        >Twitter</a
+      >
+      <a
+        href="https://github.com/michy0902"
+        target="_blank"
+        class="text-bluishGrey-dark hover:text-black"
+        >Github</a
+      >
     </div>
-
-    
   </div>
 </template>
-
 
 <script>
 export default {
   data() {
     return {
-      isDark: false
+      isDark: false,
+      glowingSection: null, // State to track which section should glow
     };
   },
   methods: {
     toggleDarkMode() {
       this.isDark = !this.isDark;
-      document.documentElement.classList.toggle('dark', this.isDark);
-    }
-  }
+      document.documentElement.classList.toggle("dark", this.isDark);
+    },
+    triggerGlow(section) {
+      // Set the section (about, contact, or projects) to glow
+      this.glowingSection = section;
+
+      // Remove the glow after 2 seconds with a fade-out effect
+      setTimeout(() => {
+        this.glowingSection = null;
+      }, 4000);
+    },
+  },
 };
 </script>
 
 <style scoped>
+html, body {
+  font-family: 'Share Tech', sans-serif;
+}
+
+.glow {
+  border: 2px solid #b3ebf2;
+  box-shadow: 0 0 20px #b3ebf2;
+  animation: fadeGlow 4s ease forwards; /* Smooth fade-out effect */
+}
+
+@keyframes fadeGlow {
+  0% {
+    border-color: #b3ebf2;
+    box-shadow: 0 0 20px #b3ebf2;
+  }
+  100% {
+    border-color: transparent;
+    box-shadow: 0 0 0px transparent;
+  }
+}
+
 /* Dark mode styles */
 .dark .bg-bluishGrey {
   background-color: #1a1a1a;
